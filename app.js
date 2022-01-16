@@ -72,7 +72,7 @@ const displayMovements = function (movements) {
         const html = `<div class="movements">
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i+1} ${type}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}  PKR </div>
         </div>`;
         
         containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -81,16 +81,74 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+const calcDisplayBalance = function(movements){
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} PKR`;
+};
+calcDisplayBalance(account1.movements);
+
+const calcDisplaySummary = function (movements){
+  const incoms = movements.filter(mov => mov > 0).reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incoms} PKR`;
+  
+  const outcoms = movements.filter(mov => mov < 0).reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outcoms)} PKR`;
+
+  const interest = movements.filter(mov => mov, 0).map(deposit => (deposit *1.2)/100).filter(int => int >= 1).reduce((acc, int) => acc+ int, 0);
+  labelSumInterest.textContent = `${interest}`;
+};
+calcDisplaySummary(account1.movements);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
+// const currencies = new Map([
+  // ['USD', 'United States dollar'],
+  // ['EUR', 'Euro'],
+  // ['GBP', 'Pound sterling'],
+// ]);
+// 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+
+// const checkDogs = function(dogsJulia, dogsKate){
+    // const dogsJuliaCorrected = dogsJulia.slice();
+    // dogsJuliaCorrected.splice(0, 1);
+    // dogsJuliaCorrected.splice(-2);
+
+    // const dogs = dogsJuliaCorrected.concat(dogsKate);
+
+    // console.log(dogs);
+
+    // dogs.forEach(function(dog, i){
+        // if(dog >= 3){
+            // console.log(`Dog number ${i+1} is an adult, and is ${dog} years old`);
+        // }else { 
+            // console.log(`Dog number ${i+1} is still a puppu`);
+
+        // }
+    // });
+// };
+// checkDogs([3, 2, 5, 6, 7, 9,11],[3, 3, 5, 6, 7, 8,12]);
+
+// const movementsDiscription = movements.map(
+    // (mov, i) =>  `Movement ${i+1}: You ${mov > 0 ? 'Deposited': 'Withdaral'} ${Math.abs(mov)}`
+// );
+// console.log(movementsDiscription);
+
+const createUsernames = function(accs){
+    accs.forEach(function(acc){
+        acc.username = acc.owner.toLowerCase().split(' ').map(name => name[0]).join('');
+    });
+    
+};
+createUsernames(accounts);
+console.log(accounts);
+
+
+// const deposits = movements.filter(function(mov){
+  // return mov > 0;
+// });
+// console.log(movements);
